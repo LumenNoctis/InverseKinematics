@@ -55,7 +55,7 @@ void CalcIK(IK_Chain *chain, MT_Vector2 mouse)
 		vec,
 		endPoint,
 		mouse);
-		chain->chain[i].angle = angle;
+		// chain->chain[i].angle = angle;
 		endPoint = MT_V2Add(MT_V2Sub(endPoint, vec), MT_V2FromAngle_Deg(angle, 	chain->chain[i].length));
 		FillCircle(SDLX_DisplayGet()->renderer, (Circle){endPoint.x, endPoint.y, 30});
 		FillCircle(SDLX_DisplayGet()->renderer, (Circle){vec.x, vec.y, 30});
