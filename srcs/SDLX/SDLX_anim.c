@@ -1,5 +1,5 @@
-#include "../../include/SDLX/SDLX.h"
-#include "../../include/SDL2/SDL_image.h"
+#include "SDLX/SDLX.h"
+#include "SDL2/SDL_image.h"
 
 SDLX_Anim	*SDLX_AnimLoad(SDL_Texture *tex, int cycle, int cell_w, int cell_h, SDL_bool loop, int x_off, int y_off)
 {
@@ -8,7 +8,7 @@ SDLX_Anim	*SDLX_AnimLoad(SDL_Texture *tex, int cycle, int cell_w, int cell_h, SD
 	int i;
 	int x;
 	int y;
-
+	
 	display = SDLX_DisplayGet();
 	anim = calloc(1, sizeof(*anim));
 	anim->cycle = cycle;

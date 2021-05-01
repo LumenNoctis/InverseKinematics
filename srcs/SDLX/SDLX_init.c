@@ -1,4 +1,4 @@
-#include "../../include/SDLX/SDLX.h"
+#include "SDLX/SDLX.h"
 
 static SDLX_Display display;
 void SDLX_Init(void);

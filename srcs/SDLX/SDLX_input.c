@@ -1,4 +1,4 @@
-#include "../../include/SDLX/SDLX_input.h"
+#include "SDLX/SDLX_input.h"
 
 
 // These variables to be only visible within this file
@@ -94,9 +94,10 @@ void SDLX_InputUpdate(SDL_Event SDL_UNUSED event)
 			*(map_node->dest) = MAX(keyboard[map_node->key], *(map_node->dest));
 		else if (map_node->type == SDLX_CONTROLLER)
 		{
-			controller_button = SDL_GameControllerGetButton(
-								SDL_GameControllerFromPlayerIndex(map_node->controller_no),
-								map_node->key);
+			// SDL_GameControllerFromPlayerIndex();
+			// controller_button = SDL_GameControllerGetButton(
+			// 					SDL_GameControllerFromPlayerIndex(map_node->controller_no),
+			// 					map_node->key);
 			*(map_node->dest) = MAX(*(map_node->dest), controller_button);
 		}
 		map_node = map_node->next;

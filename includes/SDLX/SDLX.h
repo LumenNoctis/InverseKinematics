@@ -17,8 +17,8 @@
 #ifndef SDLX_H
 #define SDLX_H
 
-# include "SDL2\SDL.h"
-# include "..\SDL2\SDL_ttf.h"
+# include "SDL2/SDL.h"
+# include "SDL2/SDL_ttf.h"
 
 # include "SDLX_config.h"
 # include "SDLX_structs.h"

@@ -1,4 +1,4 @@
-#include "../../include/SDLX/SDLX.h"
+#include "SDLX/SDLX.h"
 
 void	SDLX_ResetWindow(void)
 {

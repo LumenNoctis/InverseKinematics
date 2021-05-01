@@ -6,6 +6,7 @@
 # include "SDLX/SDLX.h"
 
 #define MAX_JOINTS 10
+#define MIN_DIST 5
 
 typedef struct	Joint
 {
@@ -28,8 +29,9 @@ typedef struct Circle
 	double radius;
 }				Circle;
 
-void IK_Input(IK_Chain *chain);
-void DrawIk(IK_Chain *chain, SDLX_Display *display);
+int		IK_Input(IK_Chain *chain, MT_Vector2 *mouse);
+void DrawIk(IK_Chain *chain, SDLX_Display *display, MT_Vector2 mouse, int state);
+void DrawLine(MT_Vector2 slope, double b);
 
 int AddJoint(IK_Chain *chain, double angle, double length);
 

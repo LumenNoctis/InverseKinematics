@@ -1,4 +1,4 @@
-#include "../../include/SDLX/SDLX.h"
+#include "SDLX/SDLX.h"
 # define ANIMS_CT 5
 # define QUEUE_CT 3
 

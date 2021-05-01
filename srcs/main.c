@@ -1,4 +1,4 @@
-#include "../include/IK.h"
+#include "IK.h"
 
 
 IK_Chain *InitIK()
@@ -13,22 +13,25 @@ IK_Chain *InitIK()
 	chain = calloc(1, sizeof(*chain));
 	chain->start.x = WIN_W / 2;
 	chain->start.y = WIN_H / 2;
-	chain->len = 1;
-	chain->chain[0].length = 42;
-	chain->chain->angle = MT_ToRad(42);
+	chain->len = 0;
+// 	chain->chain[0].length = 100;
+// 	chain->chain->angle = 42;
 }
 
 int main(int argc, char **argv)
 {
 	SDLX_Display	*display;
+	MT_Vector2		mouse;
  	IK_Chain		*chain;
+	int				state;
 
 	display = SDLX_DisplayGet();
 	chain = InitIK();
 	while (1)
 	{
-		IK_Input(chain);
-		DrawIk(chain, display);
+		state = IK_Input(chain, &mouse);
+		DrawIk(chain, display, mouse, state);
 		SDL_RenderPresent(display->renderer);
+		SDLX_ResetWindow();
 	}
 }
