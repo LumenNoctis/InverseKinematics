@@ -1,66 +1,84 @@
 #include "IK.h"
 
-double CalcAngle(MT_Vector2 tail, MT_Vector2 head, MT_Vector2 goal)
+int CalcAngle(IK_Chain *chain, MT_Vector2 mouse, MT_Vector2 endPoint)// flags bad, but how else..?
 {
-	SDLX_Display *display;
-	MT_Vector2	line;
-	MT_Vector2	lgoal;
-	double		lineAngle;
-	double		goalAngle;
+	int i;
+	MT_Vector2	pos_to_mouse;
+	MT_Vector2	pos_to_end;
+	MT_Vector2	position;
+	MT_Vector2	v_corrected;
+	double		a_ptm;
+	double		a_pte;
+	double		angle;
 
-	line.x = head.x - tail.x;
-	line.y = head.y - tail.y;
-	lgoal.x = goal.x - tail.x;
-	lgoal.y = goal.y - tail.y;
-	
-	
-	lineAngle = MT_V2Heading180_Deg(line);
-	goalAngle = MT_V2Heading180_Deg(lgoal);
+	MT_Vector2 dvec;
 
-	return goalAngle - lineAngle;
+	i = chain->len - 1;
+	position = endPoint;
+	v_corrected = position;
+	while (i >= 0)
+	{
+		if (MT_GetDistance2D(mouse, endPoint) <= MIN_DIST)
+			return 1;
+
+		position.x -= chain->chain[i].vec.x;
+		position.y -= chain->chain[i].vec.y;
+
+		pos_to_end.x = position.x - endPoint.x;
+		pos_to_end.y = position.y - endPoint.y;
+		pos_to_mouse.x = position.x - mouse.x;
+		pos_to_mouse.y = position.y - mouse.y;
+		
+		
+		a_ptm = MT_V2Heading180_Deg(pos_to_mouse);
+		a_pte = MT_V2Heading180_Deg(pos_to_end);
+		// SDL_Log("ptm %f, pte %f angle %f\n",a_ptm, a_pte, chain->chain[i].angle);
+		chain->chain[i].angle += a_ptm - a_pte;
+		dvec = MT_V2FromAngle_Deg(chain->chain[i].angle + a_ptm - a_pte, chain->chain[i].length);
+
+		endPoint.x -= chain->chain[i].vec.x - dvec.x;
+		endPoint.y -= chain->chain[i].vec.y - dvec.y;
+		dvec.x += position.x;
+		dvec.y += position.y;
+		SDL_SetRenderDrawColor(SDLX_DisplayGet()->renderer, 0, 150, 150, 255);
+		SDL_RenderDrawLine(SDLX_DisplayGet()->renderer,
+							position.x, position.y, dvec.x, dvec.y);
+		// SDL_RenderDrawLine(SDLX_DisplayGet()->renderer,
+		// 					position.x, position.y, endPoint.x, endPoint.y);
+
+		// SDL_Delay(250);
+		i--;
+	}
+
+	return 	0;
 }
 
 void CalcIK(IK_Chain *chain, MT_Vector2 mouse)
 {
 	int i;
-	double tlen;
-	double tangle;
+	int iter;
 	double angle;
-	MT_Vector2 vec;
+
 	MT_Vector2 endPoint;
 
-
-	tangle = 0;
-	tlen = 0;
-	endPoint = chain->start;
 	i = 0;
+	iter = 0;
+	endPoint = chain->start;
 	while (i < chain->len)
 	{
-		vec = MT_V2FromAngle_Deg(chain->chain[i].angle, chain->chain[i].length);
-		// chain->chain[i].angle += angle;
-		// SDL_Log("Angle %f\n", angle);
-		chain->chain[i].vec = vec;
-		endPoint.x += vec.x;
-		endPoint.y += vec.y;
+		chain->chain[i].vec = MT_V2FromAngle_Deg(chain->chain[i].angle, chain->chain[i].length);
+		
+		endPoint.x += chain->chain[i].vec.x;
+		endPoint.y += chain->chain[i].vec.y;
 		i++;
 	}
-		SDL_Log("angle %f, len %f", chain->chain[0].angle, chain->chain[0].length);
-	vec = endPoint;
-	while (i >= 0)
-	{
-		vec = MT_V2Sub(vec, chain->chain[i].vec);
-		if (MT_GetDistance2D(mouse, endPoint) <= MIN_DIST)
+
+	// while (iter < MAX_ITER)
+	// {
+		if (CalcAngle(chain, mouse, endPoint) == TRUE)
 			return ;
-		angle = CalcAngle(
-		vec,
-		endPoint,
-		mouse);
-		// chain->chain[i].angle = angle;
-		endPoint = MT_V2Add(MT_V2Sub(endPoint, vec), MT_V2FromAngle_Deg(angle, 	chain->chain[i].length));
-		FillCircle(SDLX_DisplayGet()->renderer, (Circle){endPoint.x, endPoint.y, 30});
-		FillCircle(SDLX_DisplayGet()->renderer, (Circle){vec.x, vec.y, 30});
-		i--;
-	}
+	// 	iter++;
+	// }
 
 	// vec = MT_V2FromAngle_Deg(tangle, tlen);
 }

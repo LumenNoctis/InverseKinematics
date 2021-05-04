@@ -7,6 +7,9 @@
 
 #define MAX_JOINTS 10
 #define MIN_DIST 5
+#define MAX_ITER 10
+#define TRUE	1
+#define FAlSE	0
 
 typedef struct	Joint
 {
