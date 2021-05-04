@@ -39,9 +39,6 @@ int CalcAngle(IK_Chain *chain, MT_Vector2 mouse, MT_Vector2 endPoint)// flags ba
 		endPoint.y -= chain->chain[i].vec.y - dvec.y;
 		dvec.x += position.x;
 		dvec.y += position.y;
-		SDL_SetRenderDrawColor(SDLX_DisplayGet()->renderer, 0, 150, 150, 255);
-		SDL_RenderDrawLine(SDLX_DisplayGet()->renderer,
-							position.x, position.y, dvec.x, dvec.y);
 		i--;
 	}
 
