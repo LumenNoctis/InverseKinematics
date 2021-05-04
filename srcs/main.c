@@ -11,11 +11,7 @@ IK_Chain *InitIK()
 				WIN_H, WIN_W, SDL_WINDOW_SHOWN);
 
 	chain = calloc(1, sizeof(*chain));
-	chain->start.x = WIN_W / 2;
-	chain->start.y = WIN_H / 2;
 	chain->len = 0;
-// 	chain->chain[0].length = 100;
-// 	chain->chain->angle = 42;
 }
 
 int main(int argc, char **argv)
@@ -30,7 +26,9 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		state = IK_Input(chain, &mouse);
-		DrawIk(chain, display, mouse, state);
+		if (state != 0)
+			CalcIK(chain, mouse);
+		DrawIk(chain, display, mouse);
 		SDL_RenderPresent(display->renderer);
 		SDLX_ResetWindow();
 	}

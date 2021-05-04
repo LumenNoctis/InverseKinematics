@@ -14,7 +14,8 @@ int IK_Input(IK_Chain *chain, MT_Vector2 *mouse)
 {
 	SDL_Event event;
 	static int state;
-	static MT_Vector2 pos = {250.0, 250.0};
+	static int start;
+	static MT_Vector2 pos;
 	int x;
 	int y;
 	Uint8 const	*kb;
@@ -32,14 +33,28 @@ int IK_Input(IK_Chain *chain, MT_Vector2 *mouse)
 		{
 			state ^= 1;
 			chain->len *= state;
-			pos = (MT_Vector2){250.0, 250.0};
+			start = 0;
+			if (state == 0)
+			{
+				chain->start.x = -10;
+				chain->start.y = -10;
+			}
 		}
 		if (event.type == SDL_MOUSEBUTTONDOWN && state == 0)
 		{
-			chain->chain[chain->len].length = MT_V2Mag(MT_V2Sub(*mouse, pos));
-			chain->chain[chain->len].angle = MT_V2Heading180_Deg(MT_V2Sub(*mouse, pos));
-			pos = *mouse;
-			chain->len++;
+			if (!start)
+			{
+				start = 1;
+				chain->start = *mouse;
+				pos = *mouse;
+			}
+			else
+			{
+				chain->chain[chain->len].length = MT_V2Mag(MT_V2Sub(*mouse, pos));
+				chain->chain[chain->len].angle = MT_V2Heading180_Deg(MT_V2Sub(*mouse, pos));
+				pos = *mouse;
+				chain->len++;
+			}
 		}
 	}
 	return state;
@@ -88,7 +103,6 @@ void DrawCircle(SDL_Renderer *ren, Circle circle)
 		SDL_RenderDrawPoint(ren, circle.x + y, circle.y + x);
 		i += 8;
 	}
-	// printf("Points %d circumfrence %d",i,(int)( 2 * M_PI * circle.radius ));
 	SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
 }
 

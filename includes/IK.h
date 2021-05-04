@@ -33,7 +33,9 @@ typedef struct Circle
 }				Circle;
 
 int		IK_Input(IK_Chain *chain, MT_Vector2 *mouse);
-void DrawIk(IK_Chain *chain, SDLX_Display *display, MT_Vector2 mouse, int state);
+
+void CalcIK(IK_Chain *chain, MT_Vector2 mouse);
+void DrawIk(IK_Chain *chain, SDLX_Display *display, MT_Vector2 mouse);
 void DrawLine(MT_Vector2 slope, double b);
 
 int AddJoint(IK_Chain *chain, double angle, double length);
