@@ -18,3 +18,5 @@ Given an array of vectors (the "IK chain"), a starting point (or root of the cha
 6 This completes one iteration of the algorithm. One may continue until E gets abirtrarily close to T or until a certain number of iterations is reached
 
 ----
+
+<img align="top" src="Ressources/IK.gif" />
